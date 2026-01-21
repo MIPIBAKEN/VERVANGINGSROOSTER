@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { ReplacementEntry, SickEntry } from '../types';
-import { WEEK_DAYS, LESSON_HOURS, formatDateNL } from '../constants';
-import { Printer, FileText, Download } from 'lucide-react';
+import { WEEK_DAYS, formatDateNL } from '../constants';
+import { Printer, FileDown } from 'lucide-react';
 
 interface WeeklyExportProps {
   replacements: ReplacementEntry[];
@@ -26,8 +26,7 @@ export const WeeklyExport: React.FC<WeeklyExportProps> = ({ replacements, sickEn
         d.setDate(d.getDate() + i);
         days.push({
             str: formatDateNL(d),
-            label: WEEK_DAYS[i],
-            fullLabel: `${WEEK_DAYS[i]} ${d.getDate()}/${d.getMonth()+1}`
+            label: WEEK_DAYS[i]
         });
     }
     return days;
@@ -38,26 +37,26 @@ export const WeeklyExport: React.FC<WeeklyExportProps> = ({ replacements, sickEn
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 no-print">
-      <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-200 flex items-center justify-between">
+    <div className="space-y-8 animate-in fade-in duration-500">
+      <div className="bg-white p-8 rounded-3xl shadow-xl border border-slate-200 flex items-center justify-between no-print">
         <div>
-          <h3 className="text-2xl font-black text-slate-800 tracking-tight">Weekoverzicht Export</h3>
-          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Genereer een PDF van Week {selectedWeek.split('-W')[1]}</p>
+          <h3 className="text-2xl font-black text-slate-800 tracking-tight">PDF Export / Weekoverzicht</h3>
+          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Geselecteerd: Week {selectedWeek.split('-W')[1]}</p>
         </div>
         <button 
           onClick={handlePrint}
           className="bg-blue-600 hover:bg-blue-700 text-white font-black px-8 py-4 rounded-2xl shadow-xl shadow-blue-200 transition-all flex items-center gap-3 text-sm uppercase tracking-widest"
         >
-          <Printer size={20} /> Opslaan als PDF
+          <Printer size={20} /> Genereer PDF (Print)
         </button>
       </div>
 
-      <div className="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden">
+      <div className="bg-white rounded-3xl shadow-xl border border-slate-200 overflow-hidden main-content">
         <div className="p-10">
           <div className="flex justify-between items-start mb-10 pb-6 border-b-2 border-slate-100">
             <div>
               <h1 className="text-3xl font-black text-slate-900 uppercase tracking-tighter">School<span className="text-blue-600">Rooster</span></h1>
-              <p className="text-sm font-bold text-slate-400 mt-1 uppercase tracking-widest">Vervangingsoverzicht</p>
+              <p className="text-sm font-bold text-slate-400 mt-1 uppercase tracking-widest">Wekelijks Vervangingsoverzicht</p>
             </div>
             <div className="text-right">
               <div className="text-sm font-black text-slate-500 uppercase">Week {selectedWeek.split('-W')[1]}</div>
@@ -91,10 +90,10 @@ export const WeeklyExport: React.FC<WeeklyExportProps> = ({ replacements, sickEn
                         {dayReps.sort((a,b) => a.lessonHour - b.lessonHour).map(r => (
                           <tr key={r.id} className="hover:bg-slate-50/50">
                             <td className="p-4 font-black text-slate-700">{r.lessonHour}e</td>
-                            <td className="p-4 font-bold text-blue-700 uppercase">{r.absentTeacher}</td>
+                            <td className="p-4 font-bold text-red-600 uppercase">{r.absentTeacher}</td>
                             <td className="p-4 font-bold uppercase">{r.classGroup}</td>
                             <td className="p-4 font-mono text-slate-500">{r.room || '-'}</td>
-                            <td className="p-4 font-black text-emerald-600 uppercase">{r.replacementTeacher}</td>
+                            <td className="p-4 font-black text-blue-600 uppercase">{r.replacementTeacher}</td>
                             <td className="p-4">
                               {r.hasTask ? <span className="text-[10px] bg-blue-50 text-blue-600 font-black px-2 py-1 rounded uppercase">Ja</span> : <span className="text-[10px] text-slate-300">Nee</span>}
                             </td>
@@ -108,52 +107,9 @@ export const WeeklyExport: React.FC<WeeklyExportProps> = ({ replacements, sickEn
             })}
             
             {!weekDates.some(d => replacements.some(r => r.date === d.str)) && (
-              <div className="text-center py-20 text-slate-400 italic">Geen vervangingen deze week.</div>
+              <div className="text-center py-20 text-slate-400 italic">Geen vervangingen geregistreerd voor deze week.</div>
             )}
           </div>
-        </div>
-      </div>
-
-      {/* Invisible printable content for browser window.print() */}
-      <div className="print-only">
-        {/* Repeating the same content but optimized for actual paper */}
-        <div style={{ padding: '20px' }}>
-          <h1 style={{ fontSize: '24px', fontWeight: '900', marginBottom: '5px' }}>WEEK OVERZICHT VERVANGINGEN</h1>
-          <p style={{ fontSize: '14px', marginBottom: '20px' }}>Week {selectedWeek.split('-W')[1]} ({weekDates[0].str} - {weekDates[4].str})</p>
-          
-          {weekDates.map(day => {
-            const dayReps = replacements.filter(r => r.date === day.str);
-            if (dayReps.length === 0) return null;
-            return (
-              <div key={day.str} style={{ marginBottom: '30px', pageBreakInside: 'avoid' }}>
-                <h2 style={{ fontSize: '16px', fontWeight: 'bold', borderBottom: '2px solid black', paddingBottom: '4px', marginBottom: '10px' }}>{day.label.toUpperCase()} - {day.str}</h2>
-                <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #ccc' }}>
-                  <thead>
-                    <tr style={{ background: '#f0f0f0', textAlign: 'left', fontSize: '10px' }}>
-                      <th style={{ padding: '8px', border: '1px solid #ccc' }}>UUR</th>
-                      <th style={{ padding: '8px', border: '1px solid #ccc' }}>AFWEZIG</th>
-                      <th style={{ padding: '8px', border: '1px solid #ccc' }}>KLAS</th>
-                      <th style={{ padding: '8px', border: '1px solid #ccc' }}>LOKAAL</th>
-                      <th style={{ padding: '8px', border: '1px solid #ccc' }}>VERVANGER</th>
-                      <th style={{ padding: '8px', border: '1px solid #ccc' }}>TAAK</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {dayReps.sort((a,b) => a.lessonHour - b.lessonHour).map(r => (
-                      <tr key={r.id} style={{ fontSize: '12px' }}>
-                        <td style={{ padding: '8px', border: '1px solid #ccc', fontWeight: 'bold' }}>{r.lessonHour}e</td>
-                        <td style={{ padding: '8px', border: '1px solid #ccc' }}>{r.absentTeacher}</td>
-                        <td style={{ padding: '8px', border: '1px solid #ccc' }}>{r.classGroup}</td>
-                        <td style={{ padding: '8px', border: '1px solid #ccc' }}>{r.room}</td>
-                        <td style={{ padding: '8px', border: '1px solid #ccc', fontWeight: 'bold' }}>{r.replacementTeacher}</td>
-                        <td style={{ padding: '8px', border: '1px solid #ccc' }}>{r.hasTask ? 'JA' : ''}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            );
-          })}
         </div>
       </div>
     </div>
