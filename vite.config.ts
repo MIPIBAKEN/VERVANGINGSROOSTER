@@ -5,7 +5,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(() => {
   return {
     // Verander 'SCHOOLROOSTER' naar de exacte naam van je GitHub repository
-    base: './', 
+    base: '/VERVANGINGSROOSTER/',
+
 
     server: {
       port: 3000,
