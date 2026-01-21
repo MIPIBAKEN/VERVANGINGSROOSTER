@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { SubstituteDefinition } from '../types';
-import { WEEK_DAYS, LESSON_HOURS, isValidLessonHour } from '../constants';
+// Import generateId from constants.ts where it is defined
+import { WEEK_DAYS, LESSON_HOURS, isValidLessonHour, generateId } from '../constants';
 import { X } from 'lucide-react';
-import { generateId } from '../App';
 
 interface SubstituteManagementProps {
   substitutes: SubstituteDefinition[];

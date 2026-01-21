@@ -1,28 +1,23 @@
 import path from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig(() => {
-  return {
-    // Verander 'SCHOOLROOSTER' naar de exacte naam van je GitHub repository
-    base: '/VERVANGINGSROOSTER/',
-
-
-    server: {
-      port: 3000,
-      host: '0.0.0.0',
-    },
-
-    plugins: [react()],
-
-    // Fix: Manual process.env definitions for API_KEY are removed as the key is automatically injected by the platform.
-    define: {},
-
-    resolve: {
-      alias: {
-        // Fix: __dirname is not defined in ES modules. path.resolve('.') resolves to the current working directory (project root).
-        '@': path.resolve('.'),
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, '.', '');
+    return {
+      server: {
+        port: 3000,
+        host: '0.0.0.0',
+      },
+      plugins: [react()],
+      define: {
+        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+      },
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, '.'),
+        }
       }
-    }
-  };
+    };
 });

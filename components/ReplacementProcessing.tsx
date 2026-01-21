@@ -1,8 +1,9 @@
+
 import React, { useState, useMemo, useEffect } from 'react';
 import { ReplacementEntry, SickEntry, SubstituteDefinition } from '../types';
-import { LESSON_HOURS, WEEK_DAYS, formatDateNL } from '../constants';
+// Import generateId from constants.ts where it is defined
+import { LESSON_HOURS, WEEK_DAYS, formatDateNL, generateId } from '../constants';
 import { CheckSquare, Square, UserCheck, School, Briefcase, Trash2, AlertCircle, CheckCircle2, UserX, UserPlus } from 'lucide-react';
-import { generateId } from '../App';
 
 interface ReplacementProcessingProps {
   sickEntries: SickEntry[];
@@ -252,7 +253,7 @@ export const ReplacementProcessing: React.FC<ReplacementProcessingProps> = ({
          </div>
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden">
         <div className="flex-1 overflow-auto bg-slate-100 p-6">
             <div className="bg-white rounded-lg shadow border border-slate-200 min-h-[500px]">
                 {tableRows.length === 0 ? (
@@ -299,7 +300,10 @@ export const ReplacementProcessing: React.FC<ReplacementProcessingProps> = ({
                                     >
                                         <td className="p-3 text-center">
                                             {isReplacementSick ? (
-                                                <UserX size={18} className="text-red-600 mx-auto animate-pulse" title="Vervanger is zelf ziek!" />
+                                                // Fix: Wrap UserX in a div to hold the title attribute, as Lucide icons don't support it directly in this version's types.
+                                                <div className="mx-auto" title="Vervanger is zelf ziek!">
+                                                  <UserX size={18} className="text-red-600 animate-pulse" />
+                                                </div>
                                             ) : isComplete ? (
                                                 <CheckCircle2 size={18} className="text-emerald-500 mx-auto" />
                                             ) : (

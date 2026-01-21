@@ -1,7 +1,7 @@
 export interface SickEntry {
   id: string;
-  week: string;
-  date: string;
+  week: string; // "2024-W05"
+  date: string; // "dd/mm/yyyy"
   teacherAbbr: string;
   absentHours: number[]; 
   note?: string;
@@ -34,7 +34,7 @@ export interface HourConfig {
   end: string;
 }
 
-export type ViewMode = 'DASHBOARD' | 'SICK' | 'SUBSTITUTES' | 'PROCESSING' | 'TV' | 'ADMIN';
+export type ViewMode = 'DASHBOARD' | 'SICK' | 'SUBSTITUTES' | 'PROCESSING' | 'TV' | 'REPORTS' | 'ADMIN';
 
 export interface UserSession {
   role: 'SECRETARIAAT' | 'WEERGAVE' | 'ADMIN' | null;

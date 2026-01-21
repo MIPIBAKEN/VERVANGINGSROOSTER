@@ -1,8 +1,9 @@
+
 import React, { useState } from 'react';
 import { SickEntry } from '../types';
-import { WEEK_DAYS, formatDateNL, LESSON_HOURS, isValidLessonHour } from '../constants';
+// Import generateId from constants.ts where it is defined
+import { WEEK_DAYS, formatDateNL, LESSON_HOURS, isValidLessonHour, generateId } from '../constants';
 import { Trash2, Plus, X, Calendar, Clock, User, Save, AlertCircle } from 'lucide-react';
-import { generateId } from '../App';
 
 interface SickRegistrationProps {
   entries: SickEntry[];

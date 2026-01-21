@@ -1,18 +1,20 @@
-# SchoolRooster Pro
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-Een professioneel webgebaseerd systeem voor het registreren van leerkrachtafwezigheden en het beheren van vervangingen.
+# Run and deploy your AI Studio app
 
-## Functionaliteiten
-- **Dashboard**: Snel overzicht van de status van vandaag.
-- **Ziekteregistratie**: Eenvoudig (meerdere) uren of periodes invoeren.
-- **Vervangingsverwerking**: Drag-and-drop vanuit de vaste vervangerspoule.
-- **TV/Narrowcasting**: Geoptimaliseerde weergave voor schermen (Raspberry Pi).
-- **Rapportage**: Analyse van vervangingsgraad en piekuren.
-- **Export**: Genereer wekelijkse PDF-overzichten voor administratie.
+This contains everything you need to run your app locally.
 
-## TV Weergave instellen (Raspberry Pi)
-Open de browser in Kiosk-modus op de volgende URL:
-`https://[jouw-github-gebruikersnaam].github.io/[project-naam]/?view=tv`
+View your app in AI Studio: https://ai.studio/apps/drive/1XQ7EVs3jBJMWObhdE6Vtk2JWCnNCXLb1
 
-## Ontwikkeling
-Dit project is gebouwd met React, Tailwind CSS en Lucide Icons.
+## Run Locally
+
+**Prerequisites:**  Node.js
+
+
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
